@@ -1,6 +1,7 @@
 using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -40,7 +41,7 @@ namespace RuleKnit
 
 		public Assembly Compile(CodeCompileUnit compileUnit, bool treatWarningsAsErrors)
 		{
-			CSharpCodeProvider provider = new CSharpCodeProvider();
+            CSharpCodeProvider provider = new CSharpCodeProvider(new Dictionary<String, String> { { "CompilerVersion", "v3.5" } });
 			CompilerParameters compilerParameters = new CompilerParameters();
 #if DEBUG
 			compilerParameters.TempFiles = new TempFileCollection(

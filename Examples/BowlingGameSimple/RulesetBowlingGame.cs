@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using RuleKnit;
 using NUnit.Framework;
 
@@ -14,128 +16,76 @@ namespace Examples.BowlingGameSimple
 		}
 	}
 
-	[TestFixture]
-	public class IntSetTestCase
-	{
-		[Test]
-		public void Subset()
-		{
-			Assert.AreEqual(new int[] { 4, 6 }, new IntSet(new int[] { 2, 4, 6, 8 }).Subset(1, 2).Values);
-		}
+    /// <summary>
+    /// The simplicity of the methods in this class are what RuleKnit is designed to achieve.
+    /// </summary>
+    [Ruleset]
+    public abstract class RulesetBowlingGame : IBowlingGame
+    {
+        public int Score(int[] rolls)
+        {
+            return Score(new Rolls(rolls), 0, 1);
+        }
 
-		[Test]
-		public void Sum()
-		{
-			Assert.AreEqual(6, new IntSet(new int[] { 1, 2, 3 }).Sum);
-		}
-	}
+        [Generated("TotalScore", IterationExitRule = "Finished")]
+        protected abstract int Score(Rolls rolls, int totalScore, int frameNumber);
 
-	[Ruleset]
-	public abstract class RulesetBowlingGame : IBowlingGame
-	{
-		public int Score(int[] rolls)
-		{
-			return Score(new IntSet(rolls), 0, 1);
-		}
+        protected static int FrameNumber(int frameNumber)
+        {
+            return frameNumber + 1;
+        }
 
-		[Generated("TotalScore", IterationExitRule = "Finished")]
-		protected abstract int Score(IntSet rolls, int totalScore, int frameNumber);
+        protected static bool Finished(int frameNumber)
+        {
+            return frameNumber == 10;
+        }
 
-		protected static int FrameNumber(int frameNumber)
-		{
-			return frameNumber + 1;
-		}
+        protected static int FrameSize(bool isStrike)
+        {
+            return isStrike ? 1 : 2;
+        }
 
-		protected static bool Finished(int frameNumber)
-		{
-			return frameNumber == 10;
-		}
+        protected static bool IsStrike(Rolls rolls)
+        {
+            return rolls[0] == 10;
+        }
 
-		protected static int FrameSize(bool strike)
-		{
-			return strike ? 1 : 2;
-		}
+        protected static bool IsSpare(Rolls rolls)
+        {
+            return rolls[0] + rolls[1] == 10;
+        }
 
-		protected static bool Strike(IntSet rolls)
-		{
-			return rolls[0] == 10;
-		}
+        protected static int RollsToScore(bool isStrike, bool isSpare)
+        {
+            return isStrike || isSpare ? 3 : 2;
+        }
 
-		protected static bool Spare(IntSet rolls)
-		{
-			return rolls[0] + rolls[1] == 10;
-		}
+        protected static Rolls Rolls(Rolls rolls, int frameSize)
+        {
+            return rolls.GetRange(frameSize, rolls.Count - frameSize);
+        }
 
-		protected static int ScoreBalls(bool strike, bool spare)
-		{
-			return strike || spare ? 3 : 2;
-		}
+        protected static int FrameScore(Rolls rolls, int rollsToScore)
+        {
+            return rolls.GetRange(0, rollsToScore).Sum();
+        }
 
-		protected static IntSet FrameRolls(IntSet rolls, int frameSize)
-		{
-			return rolls.Subset(0, frameSize);
-		}
+        protected static int TotalScore(int totalScore, int frameScore)
+        {
+            return totalScore + frameScore;
+        }
+    }
 
-		protected static IntSet Rolls(IntSet rolls, int frameSize)
-		{
-			return rolls.Subset(frameSize , rolls.Count - frameSize);
-		}
+    [Immutable]
+    public class Rolls : List<int> 
+    {
+        public Rolls() : base() { }
 
-		protected static int FrameScore(IntSet rolls, int scoreBalls)
-		{
-			return rolls.Subset(0, scoreBalls).Sum;
-		}
+        public Rolls(int[] values) : base(values) { }
 
-		protected static int TotalScore(int totalScore, int frameScore)
-		{
-			return totalScore + frameScore;
-		}
-	}
-
-	[Immutable]
-	public class IntSet
-	{
-		private readonly int[] values;
-
-		public IntSet(int[] values)
-		{
-			this.values = values;
-		}
-
-		public int[] Values
-		{
-			get { return values; }
-		}
-
-		public int Count
-		{
-			get { return values.Length; }
-		}
-
-		public int this[int index]
-		{
-			get
-			{
-				if (index >= values.Length) return 0;
-				return values[index];
-			}
-		}
-
-		public int Sum
-		{
-			get
-			{
-				int score = 0;
-				Array.ForEach(values, delegate(int r) { score += r; });
-				return score;
-			}
-		}
-
-		public IntSet Subset(int index, int length)
-		{
-			int[] array = new int[length];
-			Array.Copy(values, index, array, 0, length);
-			return new IntSet(array);
-		}
-	}
+        public new Rolls GetRange(int index, int count)
+        {
+            return new Rolls(base.GetRange(index, count).ToArray());
+        }
+    }
 }
