@@ -7,16 +7,16 @@ RuleKnit provides runtime code generation for wiring together side-effect-free f
 ## Bowling sample
 
 The sample code below is a solution to the bowling problem posed in these articles:
-[The Bowling Game](http://web.archive.org/web/20090925095831/http://xprogramming.com/xpmag/acsbowling/)
-[Bowling Revisited[(http://web.archive.org/web/20090304201612/http://xprogramming.com/xpmag/acsBowlingProcedural.htm)
-[Extending the Procedural Bowling Game](http://web.archive.org/web/20091220052733/http://xprogramming.com/xpmag/acsBowlingProceduralFrameScore)
-[Mining the Bowling Game](http://xprogramming.com/articles/miningbowling/)
+* [The Bowling Game](http://web.archive.org/web/20090925095831/http://xprogramming.com/xpmag/acsbowling/)
+* [Bowling Revisited](http://web.archive.org/web/20090304201612/http://xprogramming.com/xpmag/acsBowlingProcedural.htm)
+* [Extending the Procedural Bowling Game](http://web.archive.org/web/20091220052733/http://xprogramming.com/xpmag/acsBowlingProceduralFrameScore)
+* [Mining the Bowling Game](http://xprogramming.com/articles/miningbowling/)
 
 ## RuleKnit solution
 
-The `RulesetBowlingGame` class (and accompanying `Rolls` class) are the _complete_ solution to the bowling calculation problem. No other code is required. The rule-based approach can distill and make obvious the underlying algorithms of the problem, as demonstrated in the static methods of {{RulesetBowlingGame}}. Procedural solutions to the problem frequently obscure the underlying rules, as can be seen in some of the earlier solutions above.
+The `RulesetBowlingGame` class (and accompanying `Rolls` class) are a complete solution to the bowling calculation problem. The rule-based approach can distill and make obvious the underlying algorithms of the problem, as demonstrated in the static methods of {{RulesetBowlingGame}}. Procedural solutions to the problem frequently obscure the underlying rules, as can be seen in some of the earlier solutions above.
 
-An interesting result of using RuleKnit to solve this problem: the clarity of the solution you see below is similar to the final solution arrived at in the articles above after multiple iterations over time. However, using RuleKnit, this result was arrived at on the _first attempt_ (without having peeked at the existing solution).
+An interesting result of using RuleKnit to solve this problem: the clarity of the solution you see below is similar to the final solution arrived at in the articles above after multiple iterations over time. However, using RuleKnit, this was the result on the first iteration (without having peeked at the existing solutions).
 
 ```
     [Ruleset]
@@ -92,24 +92,22 @@ When the ruleset is created, the following code is generated and compiled at run
 
 ```
 public class GeneratedRulesetBowlingGame : Examples.BowlingGameSimple.RulesetBowlingGame {
-	
-	protected override int Score(Examples.BowlingGameSimple.Rolls rolls, int totalScore, int frameNumber) {
-		bool finished;
-		do {
-				bool isStrike = IsStrike(rolls);
-				int frameSize = FrameSize(isStrike);
-				bool isSpare = IsSpare(rolls);
-				int rollsToScore = RollsToScore(isStrike, isSpare);
-				int frameScore = FrameScore(rolls, rollsToScore);
-				finished = Finished(frameNumber);
-				rolls = Rolls(rolls, frameSize);
-				totalScore = TotalScore(totalScore, frameScore);
-				frameNumber = FrameNumber(frameNumber);
-		}
-		while(!finished);
-		return totalScore;
-	}
-	
+    protected override int Score(Examples.BowlingGameSimple.Rolls rolls, int totalScore, int frameNumber) {
+        bool finished;
+        do {
+            bool isStrike = IsStrike(rolls);
+            int frameSize = FrameSize(isStrike);
+            bool isSpare = IsSpare(rolls);
+            int rollsToScore = RollsToScore(isStrike, isSpare);
+            int frameScore = FrameScore(rolls, rollsToScore);
+            finished = Finished(frameNumber);
+            rolls = Rolls(rolls, frameSize);
+            totalScore = TotalScore(totalScore, frameScore);
+            frameNumber = FrameNumber(frameNumber);
+        }
+        while(!finished);
+        return totalScore;
+    }
 }
 ```
 
