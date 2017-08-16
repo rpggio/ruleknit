@@ -12,7 +12,7 @@ The sample code below is a solution to the bowling problem posed in these articl
 * [Extending the Procedural Bowling Game](http://web.archive.org/web/20091220052733/http://xprogramming.com/xpmag/acsBowlingProceduralFrameScore)
 * [Mining the Bowling Game](http://xprogramming.com/articles/miningbowling/)
 
-## RuleKnit solution
+### RuleKnit solution
 
 The `RulesetBowlingGame` class (and accompanying `Rolls` class) are a complete solution to the bowling calculation problem. The rule-based approach can distill and make obvious the underlying algorithms of the problem, as demonstrated in the static methods of {{RulesetBowlingGame}}. Procedural solutions to the problem frequently obscure the underlying rules, as can be seen in some of the earlier solutions above.
 
@@ -86,9 +86,9 @@ An interesting result of using RuleKnit to solve this problem: the clarity of th
     }
 ```
 
-## The generated code
+### The generated code
 
-When the ruleset is created, the following code is generated and compiled at runtime to implement the abstract {{Score}} method. This method runs the rules iteratively until completion, returning the result. The static methods of the class were wired together based on the names of the methods and the parameter names.
+When the ruleset is created, the following code is generated and compiled at runtime to implement the abstract `Score` method. This method runs the rules iteratively until completion, returning the result. The static methods of the class were wired together based on the names of the methods and the parameter names.
 
 ```
 public class GeneratedRulesetBowlingGame : Examples.BowlingGameSimple.RulesetBowlingGame {
@@ -112,5 +112,6 @@ public class GeneratedRulesetBowlingGame : Examples.BowlingGameSimple.RulesetBow
 ```
 
 The source code for this solution is provided in the Examples project, along with the source for an algorithmic solution for comparison.
+
 This project was originally published in 2007.
 
