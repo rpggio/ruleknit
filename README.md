@@ -14,7 +14,7 @@ The sample code below is a solution to the bowling problem posed in these articl
 
 ### RuleKnit solution
 
-The `RulesetBowlingGame` class (and accompanying `Rolls` class) are a complete solution to the bowling calculation problem. The rule-based approach can distill and make obvious the underlying algorithms of the problem, as demonstrated in the static methods of {{RulesetBowlingGame}}. Procedural solutions to the problem frequently obscure the underlying rules, as can be seen in some of the earlier solutions above.
+The `RulesetBowlingGame` class (and accompanying `Rolls` class) are a complete solution to the bowling calculation problem. The rule-based approach can distill and make obvious the underlying algorithms of the problem, as demonstrated in the static methods of `RulesetBowlingGame`. Procedural solutions to the problem frequently obscure the underlying rules, as can be seen in some of the earlier solutions above.
 
 An interesting result of using RuleKnit to solve this problem: the clarity of the solution you see below is similar to the final solution arrived at in the articles above after multiple iterations over time. However, using RuleKnit, this was the result on the first iteration (without having peeked at the existing solutions).
 
